@@ -1,0 +1,44 @@
+# set 1 as myid, if there's more than 1 zookeeper nodes, please set different id for each zookeeper node
+echo 1 > /work/zookeeper/myid
+
+#edit config file
+
+vim /etc/zookeeper/conf/zoo.cfg, example:
+
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit=5
+
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit=2
+
+# the port at which the clients will connect
+clientPort=2181
+clientPortAddress=10.0.0.1
+
+# the directory where the snapshot is stored.
+dataDir=/work/zookeeper
+
+# specify all zookeeper servers
+# The fist port is used by followers to connect to the leader, so it is only listened on leader zookeeper node
+# The second one is used for leader election
+
+server.1=10.0.0.1:2888:3888
+server.2=10.0.0.2:2888:3888
+server.3=10.0.0.3:2888:3888
+
+
+#start/stop service
+
+# after all things done, restart it 
+service zookeeper restart
+
+#service zookeeper start/stop/restart/status
+
+#some commands
+/usr/share/zookeeper/bin/zkServer.sh status
+
+#zookeeper client
+#zookeeper client is a tool like unix shell, used for create/delete file
+/usr/share/zookeeper/bin/zkCli.sh -server 127.0.0.1:2181
